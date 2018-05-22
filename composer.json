@@ -30,9 +30,10 @@
         "symfony/swiftmailer-bundle": "^2.6.4",
         "symfony/symfony": "3.4.*",
         "symfony/var-dumper": "^3.4",
+		"ext-apcu": "^5.1.7",
         "twig/twig": "^1.0||^2.0",
-        "vich/uploader-bundle": "^1.4",
-		"ext-apcu": "^5.1.7"
+        "vich/uploader-bundle": "^1.4"
+		
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
