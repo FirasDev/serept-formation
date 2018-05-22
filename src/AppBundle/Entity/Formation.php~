@@ -1,0 +1,185 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
+/**
+ * Formation
+ *
+ * @ORM\Table(name="formation", indexes={@ORM\Index(name="sess_id", columns={"sess_id"})})
+ * @ORM\Entity
+ */
+class Formation
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Form_id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $formId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Name", type="string", length=50, nullable=true)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Description", type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="users_subscribed", type="integer", nullable=true)
+     */
+    private $usersSubscribed;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Theme", type="string", length=50, nullable=false)
+     */
+    private $theme;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="Mainimage", type="string", length=255, nullable=true)
+     */
+    private $mainimage;
+
+    /**
+     * @var \AppBundle\Entity\Session
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Session")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="sess_id", referencedColumnName="Session_id")
+     * })
+     */
+    private $sess;
+
+    /**
+     * @return int
+     */
+    public function getFormId()
+    {
+        return $this->formId;
+    }
+
+    /**
+     * @param int $formId
+     */
+    public function setFormId($formId)
+    {
+        $this->formId = $formId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUsersSubscribed()
+    {
+        return $this->usersSubscribed;
+    }
+
+    /**
+     * @param int $usersSubscribed
+     */
+    public function setUsersSubscribed($usersSubscribed)
+    {
+        $this->usersSubscribed = $usersSubscribed;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTheme()
+    {
+        return $this->theme;
+    }
+
+    /**
+     * @param string $theme
+     */
+    public function setTheme($theme)
+    {
+        $this->theme = $theme;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMainimage()
+    {
+        return $this->mainimage;
+    }
+
+    /**
+     * @param string $mainimage
+     */
+    public function setMainimage($mainimage)
+    {
+        $this->mainimage = $mainimage;
+
+    }
+
+    /**
+     * @return Session
+     */
+    public function getSess()
+    {
+        return $this->sess;
+    }
+
+    /**
+     * @param Session $sess
+     */
+    public function setSess($sess)
+    {
+        $this->sess = $sess;
+    }
+
+
+}
+

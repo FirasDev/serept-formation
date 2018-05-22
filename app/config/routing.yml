@@ -1,0 +1,56 @@
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+easy_admin_bundle:
+    resource: "@EasyAdminBundle/Controller/AdminController.php"
+    type:     annotation
+    prefix:   /admin/management
+
+add_new_session:
+    path: /session/add
+    defaults: { _controller:  "AppBundle:Serept:addNewSession"}
+
+formation_details:
+    path: /formation/{id}
+    defaults: { _controller:  "AppBundle:Serept:FormationDetails", id: -1}
+
+start_formation:
+    path: /start/{id}/{pagenb}
+    defaults: { _controller:  "AppBundle:Member:FormationStart", id: -1,pagenb: 1}
+
+question_action:
+    path: /question/{id}
+    defaults: { _controller:  "AppBundle:Member:Question", id: -1}
+
+correction_action:
+    path: /correction/{id}
+    defaults: { _controller:  "AppBundle:Member:Correction", id: -1}
+
+result_action:
+    path: /result/{id}
+    defaults: { _controller:  "AppBundle:Member:Result", id: -1}
+
+profile_action:
+    path: /profile
+    defaults: { _controller:  "FOSUserBundle:Profile:show"}
+
+evaluate_action:
+    path: /evaluation/{id}
+    defaults: { _controller:  "AppBundle:Member:evaluation"}
+
+showeval_action:
+    path: /evaldisp/{id}
+    defaults: { _controller:  "AppBundle:Member:showeval"}
+
+pickeval_action:
+    path: /evaluation/
+    defaults: { _controller:  "AppBundle:Serept:evaluating"}
+
+addeval_action:
+    path: /evaluation/add/{id}
+    defaults: { _controller:  "AppBundle:Serept:addeval"}
+
+
+

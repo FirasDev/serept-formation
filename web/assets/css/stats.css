@@ -1,0 +1,40 @@
+@import url(//fonts.googleapis.com/css?family=Oswald:300,400);
+.progChart canvas {
+    margin: 0 auto;
+}
+.progChart.-type-donut.-label-centered .progChart__summary {
+    position: absolute;
+    Top: 17%;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+.progChart.-type-donut.-label-centered .progChart__summary .progChart__summary__title {
+    margin: -15px 0 0;
+}
+.progChart.-type-donut.-label-centered .progChart__summary .progChart__summary__number {
+    font-size: 48px;
+    margin: 0;
+}
+.dynamic-chart
+{
+max-width: 300px;
+}
+.misc-wrap {
+    width: 100%;
+    position: relative;
+    border: 1px solid #FFF;
+    box-sizing: border-box;
+    padding: 20px 0;
+    border-radius: 10px;
+    background: #222428;
+    font-family: "Oswald", sans-serif;
+    font-weight: 300;
+    color: #FFF;
+}
+p {
+    text-align: center;
+}
+p a {
+    color: #FFF;
+}

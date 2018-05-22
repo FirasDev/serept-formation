@@ -1,0 +1,390 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: en
+    app.path.product_images: /uploads/images
+
+framework:
+    #esi: ~
+    translator: { fallbacks: ['%locale%'] }
+    secret: '%secret%'
+    templating:
+        engines: ['twig']
+    router:
+        resource: '%kernel.project_dir%/app/config/routing.yml'
+        strict_requirements: ~
+    form: ~
+    csrf_protection: ~
+    validation: { enable_annotations: true }
+    #serializer: { enable_annotations: true }
+    default_locale: '%locale%'
+    trusted_hosts: ~
+    session:
+        # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        handler_id: session.handler.native_file
+        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+    fragments: ~
+    http_method_override: true
+    assets: ~
+    php_errors:
+        log: true
+
+# Twig Configuration
+twig:
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    form_themes: ['bootstrap_4_layout.html.twig']
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver: pdo_mysql
+        host: '%database_host%'
+        port: '%database_port%'
+        dbname: '%database_name%'
+        user: '%database_user%'
+        password: '%database_password%'
+        charset: UTF8
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: '%kernel.project_dir%/var/data/data.sqlite'
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        #path: '%database_path%'
+
+    orm:
+        auto_generate_proxy_classes: '%kernel.debug%'
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: '%mailer_transport%'
+    host: '%mailer_host%'
+    username: '%mailer_user%'
+    password: '%mailer_password%'
+    spool: { type: memory }
+
+#   self explanatory
+fos_user:
+    db_driver: orm # other valid values are 'mongodb' and 'couchdb'
+    firewall_name: main
+    user_class: AppBundle\Entity\User
+    service:                        
+        mailer: fos_user.mailer.twig_swift
+    from_email:
+        address: "testserept@serept.com"
+        sender_name: "postertest%"
+    registration:
+            form:
+                type: AppBundle\Form\RegistrationType
+    profile:
+            form:
+                type: AppBundle\Form\EditFormType
+
+#vich
+vich_uploader:
+    db_driver: orm
+    mappings:
+            product_images:
+                uri_prefix:         '%app.path.product_images%'
+                upload_destination: 'D:/Programs/laragon/www/serept-formation/web/uploads/images'
+                namer: ~
+
+
+knp_paginator:
+    page_range: 5                       # number of links showed in the pagination menu (e.g: you have 10 pages, a page_range of 3, on the 5th page you'll see links to page 4, 5, 6)
+    default_options:
+        page_name: page                 # page query parameter name
+        sort_field_name: sort           # sort field query parameter name
+        sort_direction_name: direction  # sort direction query parameter name
+        distinct: true                  # ensure distinct results, useful when ORM queries are using GROUP BY statements
+        filter_field_name: filterField  # filter field query parameter name
+        filter_value_name: filterValue  # filter value query paameter name
+    template:
+        pagination: '@AppBundle/Pagination/paginator-bootstrap.html.twig'     # sliding pagination controls template
+        sortable: '@KnpPaginator/Pagination/sortable_link.html.twig' # sort link template
+        filtration: '@KnpPaginator/Pagination/filtration.html.twig'  # filters template
+
+#   Asset Management
+assetic:
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+        cssrewrite: ~
+easy_admin:
+    site_name: Serept - Admin Space
+    list :
+        title: 'List of %%entity_label%%'
+        actions: ['show']
+
+    design:
+        menu:
+            - {entity:  User, label: Users,icon:  user}
+            - {entity:  Session, label: Session,icon:  calendar}
+            - {entity:  Formation, label: Trainings,icon:  graduation-cap}
+            - {entity:  Content, label: Content,icon:  files-o}
+            - {entity:  Questions, label: Questions,icon:  question}
+            - {entity:  Evaluation, label: Evaluations,icon:  commenting}
+            - {entity:  About, label: User Information,icon:  list-alt}
+    entities:
+        User:
+            class:  AppBundle\Entity\User
+            app_bundle: {algorithm: 'bcrypt', cost: 12}
+            label: users
+            list:
+                actions:
+                    - { name: edit, icon: pencil-square-o, label: Edit }
+                    - { name: show, icon: info-circle, label: Show }
+                    - { name: delete, icon: trash, label: Delete }
+#                    - {name: homepage, type: route, label: Home, class: 'btn btn-info', icon: home  }
+                fields:
+                    - {property: firstname, type: string}
+                    - {property: lastname, type: string}
+                    - {property: email, type: email}
+                    - enabled
+                    - {property: roles, template: _field_user_roles.html.twig,label_colors: ['primary', 'warning', 'info']}
+                    - {property: mobilenumber, type: string}
+                search:
+                    fields: [firstname,lastname,email,mobilenumber]
+                sort: 'firstname'
+            form:
+                fields:
+                    - {property: 'email', type: email}
+                    - {property: 'password', type: 'password'}
+                    - firstname
+                    - lastname
+                    - mobilenumber
+                    - enabled
+                    - { property: 'roles', type: 'choice', type_options: { expanded: true, multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_SUPERVISOR': 'ROLE_SUPERVISOR', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
+            show:
+                title:  'Showing Selected User'
+                fields:
+                    - {property: firstname, type: string}
+                    - {property: lastname, type: string}
+                    - {property: email, type: string}
+                    - {property: mobilenumber, type: string}
+                    - roles
+            edit:
+                title:  'editing User'
+                fields:
+                    - firstname
+                    - lastname
+                    - {property: email, type: email}
+                    - {property: password, type: password}
+                    - mobilenumber
+                    - enabled
+                    - { property: 'roles', type: 'choice', type_options: { expanded: true, multiple: true, choices: { 'ROLE_USER': 'ROLE_USER', 'ROLE_SUPERVISOR': 'ROLE_SUPERVISOR', 'ROLE_ADMIN': 'ROLE_ADMIN' } } }
+
+        Session:
+            class:  AppBundle\Entity\Session
+            disabled_actions: ['new']
+            label: Session
+            list:
+                title: 'List of The Session'
+                actions:
+                    - { name: edit, icon: pencil-square-o, label: Edit }
+                    - { name: show, icon: info-circle, label: Show }
+                    - { name: delete, icon: trash, label: Delete }
+                fields:
+                    - {property: dateBegin, type: datetime}
+                    - {property: dateEnd, type: datetime}
+                    - sessionmanager
+                search:
+                    fields: [dateBegin,dateEnd]
+                sort: 'dateBegin'
+
+            form:
+                fields:
+                    - dateBegin
+                    - dateEnd
+        Formation:
+            class:  AppBundle\Entity\Formation
+            disabled_actions: ['delete','edit','new']
+            label: Formation
+            list:
+                title: 'List of The Training Session'
+                actions:
+                    - { name: edit, icon: pencil-square-o, label: Edit }
+                    - { name: show, icon: info-circle, label: Show }
+                    - { name: delete, icon: trash, label: Delete }
+                fields:
+                    - {property: theme, type: string}
+                    - {property: Name, type: string}
+                    - {property: Description, type: string}
+                    - givenskills
+                    - {property: mainimage, type: image, base_path: '%app.path.product_images%'}
+                    - sess
+
+                search:
+                    fields: [Name,theme]
+                sort: 'theme'
+
+            form:
+                fields:
+                    - Name
+                    - Description
+                    - theme
+            show:
+                title:  'Showing Training Session'
+                fields:
+                    - {property: Name, type: string}
+                    - {property: theme, type: string}
+                    - {property: Description, type: string}
+                    - {property: givenskills, type: string}
+                    - {property: mainimage, type: image, base_path: '%app.path.product_images%'}
+
+
+        Content:
+            class:  AppBundle\Entity\Content
+            disabled_actions: ['delete','edit','new']
+            label: Content
+            list:
+                actions:
+                    - { name: edit, icon: pencil-square-o, label: Edit }
+                    - { name: show, icon: info-circle, label: Show }
+                    - { name: delete, icon: trash, label: Delete }
+#                    - {name: homepage, type: route, label: Home, class: 'btn btn-info', icon: home  }
+                fields:
+                    - {property: pageNb, type: integer}
+                    - {property: imgT, type: image, base_path: '%app.path.product_images%'}
+                    - {property: textT, type: text}
+                    - form
+
+                search:
+                    fields: [pageNb]
+                sort: 'pageNb'
+
+            form:
+                fields:
+                    - pageNb
+                    - imgT
+                    - textT
+            show:
+                title:  'Showing Contents'
+                fields:
+                    - {property: pageNb, type: integer}
+                    - {property: imgT, type: image, base_path: '%app.path.product_images%'}
+                    - {property: textT, type: text}
+
+        Questions:
+            class:  AppBundle\Entity\Questions
+            disabled_actions: ['delete','edit','new']
+            label: Questions
+            list:
+                actions:
+                    - { name: edit, icon: pencil-square-o, label: Edit }
+                    - { name: show, icon: info-circle, label: Show }
+                    - { name: delete, icon: trash, label: Delete }
+                fields:
+                    - {property: Question, type: text}
+                    - {property: rep1,label: First Choice, type: text}
+                    - {property: rep2,label: Second Choice, type: text}
+                    - {property: rep3,label: Third Choice, type: text}
+                    - {property: pagenumber,label: Page Number, type: integer}
+                    - formid
+                search:
+                    fields: [Question]
+                sort: 'answer'
+
+            form:
+                fields:
+                    - answer
+            show:
+                title:  'Showing Questions'
+                fields:
+                      - {property: Question, type: text}
+                      - {property: rep1, type: text}
+                      - {property: rep2, type: text}
+                      - {property: rep3, type: text}
+
+        Evaluation:
+            class:  AppBundle\Entity\Evaluation
+            disabled_actions: ['delete','edit','new']
+            label: Evaluation
+            list:
+                actions:
+                    - { name: edit, icon: pencil-square-o, label: Edit }
+                    - { name: show, icon: info-circle, label: Show }
+                    - { name: delete, icon: trash, label: Delete }
+                fields:
+                    - formid
+                    - {property: question1, type: text}
+                    - {property: question2, type: text}
+                    - {property: question3, type: text}
+                    - {property: question4, type: text}
+                    - {property: question5, type: text}
+                search:
+                    fields: [question1,question2,question3,question4,question5,formid]
+                sort: 'formid'
+
+            form:
+                fields:
+                    - question1
+                    - question2
+                    - question3
+                    - question4
+                    - question5
+                    - formid
+            show:
+                title:  'Showing Questions'
+                fields:
+                      - {property: question1, type: text}
+                      - {property: question2, type: text}
+                      - {property: question3, type: text}
+                      - {property: question4, type: text}
+                      - {property: question5, type: text}
+
+        About:
+            class:  AppBundle\Entity\About
+            disabled_actions: ['delete']
+            label: User info
+            list:
+                actions:
+                    - { name: edit, icon: pencil-square-o, label: Edit }
+                    - { name: show, icon: info-circle, label: Show }
+                    - { name: delete, icon: trash, label: Delete }
+                fields:
+                    - aboutuserid
+                    - {property: dept,label: department, type: text}
+                    - {property: datebirth,label: Birthday, type: date}
+                    - {property: nationality,label: Nationality, type: text}
+                    - {property: maritalstatus,label: Marital Status, type: text}
+                    - {property: skills,label: Skills, type: text}
+                    - {property: profileimage,label: Profile Picture, type: image, base_path: '%app.path.product_images%'}
+
+
+                search:
+                    fields: [aboutuserid,dept,datebirth,nationality,maritalstatus,skills]
+                sort: 'aboutuserid'
+
+            form:
+                fields:
+                    - {property: dept,label: department, type: text}
+                    - {property: datebirth,label: Birth date, type: date}
+                    - {property: nationality,label: Nationality, type: text}
+                    - {property: maritalstatus,label: Marital Status, type: text}
+                    - {property: skills,label: Skills, type: text}
+                    - { property: imageFile, type: vich_image }
+                    - aboutuserid
+            show:
+                title:  'Showing Additional User Information'
+                fields:
+                    - aboutuserid
+                    - {property: dept,label: department, type: text}
+                    - {property: datebirth,label: Birth date, type: date}
+                    - {property: nationality,label: Nationality, type: text}
+                    - {property: maritalstatus,label: Marital Status, type: text}
+                    - {property: skills,label: Skills, type: text}
+                    - {property: profileimage, type: image, base_path: '%app.path.product_images%'}
+
+
+
+
+
+

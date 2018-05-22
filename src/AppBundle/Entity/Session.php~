@@ -1,0 +1,111 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Session
+ *
+ * @ORM\Table(name="session")
+ * @ORM\Entity
+ */
+class Session
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="Session_id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $sessionId;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="session_nbr", type="integer", nullable=false)
+     */
+    private $Sessionnbr;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_begin", type="datetime", nullable=false)
+     */
+    private $dateBegin;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_end", type="datetime", nullable=false)
+     */
+    private $dateEnd;
+
+    /**
+     * @return int
+     */
+    public function getSessionId()
+    {
+        return $this->sessionId;
+    }
+
+    /**
+     * @param int $sessionId
+     */
+    public function setSessionId($sessionId)
+    {
+        $this->sessionId = $sessionId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSessionnbr()
+    {
+        return $this->Sessionnbr;
+    }
+
+    /**
+     * @param int $Sessionnbr
+     */
+    public function setSessionnbr($Sessionnbr)
+    {
+        $this->Sessionnbr = $Sessionnbr;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateBegin()
+    {
+        return $this->dateBegin;
+    }
+
+    /**
+     * @param \DateTime $dateBegin
+     */
+    public function setDateBegin($dateBegin)
+    {
+        $this->dateBegin = $dateBegin;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDateEnd()
+    {
+        return $this->dateEnd;
+    }
+
+    /**
+     * @param \DateTime $dateEnd
+     */
+    public function setDateEnd($dateEnd)
+    {
+        $this->dateEnd = $dateEnd;
+    }
+
+
+}
+

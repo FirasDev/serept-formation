@@ -1,0 +1,104 @@
+
+body, html{
+    background-image:url('../images/oil.jpg') ;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    background-size: cover;
+
+}
+
+.main{
+    margin-top: 70px;
+}
+
+h1.title {
+    font-size: 50px;
+    font-family: 'Passion One', cursive;
+    font-weight: 400;
+}
+
+hr{
+    width: 10%;
+    color: #fff;
+}
+
+.form-group{
+    margin-bottom: 15px;
+}
+label
+{
+    margin-bottom: 15px;
+}
+input,
+input::-webkit-input-placeholder
+{
+    font-size: 11px;
+    padding-top: 3px;
+}
+.main-login{
+    background-color: #fff;
+    /* shadows and rounded borders */
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+}
+.main-center{
+    margin: 0 auto;
+    max-width: 330px;
+    padding: 40px 40px;
+}
+.login-button
+{
+    border-radius: 15px;
+    background-color: #1a529d;
+}
+body {
+    background-color: #f4f4f4;
+    font-family: 'Open Sans', sans-serif;
+    height: 100vh;
+    margin: 0;
+    color: #333;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+}
+
+h1 {
+    font-weight: 300;
+}
+
+
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1em 0 0 0;}
+button {
+    margin-left: 16px;
+}
+
+.label--required:after {
+    content: '*';
+    color: red;
+    margin-left: 5px;
+}
+.login-error {
+    border-top: 3px solid #c0392b;
+    display: block;}
+.message {
+    display: block;
+    color: #c0392b;
+    margin-bottom: .25rem;
+}
+.next-steps {
+    color: #555;
+}
+.warning {
+    fill: #c0392b;
+    margin-right: 5px;
+}

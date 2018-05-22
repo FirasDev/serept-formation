@@ -1,0 +1,150 @@
+{% extends "::page_layout.html.twig" %}
+{% block title %}Available Training Sessions{% endblock %}
+{% block body %}
+
+	<body id="easyadmin-list-User" class="easyadmin sidebar-mini list list-user ">
+	<div class="wrapper">
+		<header class="main-header">
+			<nav class="navbar" role="navigation">
+				<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+					<span class="sr-only">Toggle navigation</span>
+				</a>
+				<div id="header-logo">
+					<a class="logo logo-long" title="Serept - My Training" href="/forms">
+						Serept - My Training
+					</a>
+				</div>
+				<div class="navbar-custom-menu">
+					<ul class="nav navbar-nav">
+						<li class="dropdown user user-menu">
+							<span class="sr-only">Logged in as</span>
+
+							<div class="btn-group">
+								<button type="button" class="btn" data-toggle="dropdown">
+
+									{{ app.user.firstname~ " "~ app.user.lastname }}
+								</button>
+								<button type="button" class="btn dropdown-toggle" data-toggle="dropdown"
+								        aria-expanded="false">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu">
+									<li>
+										<a href="{{ path('profile_action') }}"><i class="fa fa-user"></i> My Profile</a>
+									</li>
+									{#<li>#}
+										{#<a href="/notifs"><i class="fa fa-bell"></i> Notifications</a>#}
+									{#</li>#}
+									<li>
+										<a href="/logout"><i class="fa fa-sign-out"></i> Sign out</a>
+									</li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+
+		<aside class="main-sidebar">
+			<section class="sidebar">
+				<ul class="sidebar-menu">
+					<li class="   ">
+						<a href="/">
+							<i class="fa fa-line-chart"></i> <span>Dashboard</span>
+						</a>
+					</li>
+					<li class="   ">
+						<a href="/admin/management/">
+							<i class="fa fa-lock"></i> <span>Admin Space</span>
+						</a>
+					</li>
+					<li class="   ">
+						<a href="/forms/add">
+							<i class="fa fa-graduation-cap"></i> <span>Supervisor Space</span>
+						</a>
+					</li>
+					<li class="   ">
+						<a href="/evaluation">
+							<i class="fa fa-file-text-o"></i> <span>Add Evaluations</span>
+						</a>
+					</li>
+					<li class="active">
+						<a href="/forms">
+							<i class="fa fa-book"></i> <span>My Training</span>
+						</a>
+					</li>
+					<li class="   ">
+						<a href="/About">
+							<i class="fa fa-info"></i> <span>About</span>
+						</a>
+					</li>
+				</ul>
+			</section>
+		</aside>
+		<div class="content-wrapper">
+			<section class="content-header">
+				<div class="row">
+					<div class="col-md-5 col-md-offset-5">
+						<h1 class="title" style="margin-top:25px;" >Available Training Sessions</h1>
+					</div>
+					<div class="col-sm-7">
+						<div class="global-actions">
+						</div>
+					</div>
+				</div>
+			</section>
+			<section id="main" class="content">
+				<div class="container">
+					<div class="welling welling-sm">
+						<strong>Display</strong>
+						<div class="btnie-groupie" >
+							<a href="#" id="listie" class="btnie btnie-default btnie-sm"><span class="glyphicon glyphicon-th-list">
+            </span>List</a> <a href="#" id="gridie" class="btnie btnie-default btnie-sm">
+								<span class="glyphicon glyphicon-th"></span>Grid</a>
+						</div>
+					</div>
+					<div id="products" class="row listie-group">
+						{% dump date("now") %}
+						{% for f in pagination %}
+							{% dump f.sess.dateEnd %}
+							{% if date("now") <= f.sess.dateEnd and f.sess.sessionmanager.id != app.user.id %}
+								<div class="itemie  col-xs-4 col-lg-4">
+									<div class="thumbnail">
+										<img class="group listie-group-image img-responsive" style="height:202px;width:360px;"
+										     src="{{ asset("uploads/images/"~ f.Mainimage) }}" alt="not found"/>
+										<div class="caption">
+											<h4 class="group inner listie-group-itemie-heading">
+												{{ f.Name }}</h4>
+											<p class="group listie-group-itemie-text">
+												{{ f.Description }}.</p>
+											<div class="row" style="padding: 10px;margin-bottom: -20px;margin-top:10px;">
+												<div class="col-xs-12 col-md-6" style="margin-left: 25px;">
+													<p class="lead">
+														{{ f.Theme }}</p>
+												</div>
+												<div class="col-xs-12 col-md-6" style="margin-right: -50px;">
+
+													<a class="btn btn-primary" href="{{ path('formation_details',{ 'id' : f.formId}) }}">More
+														Details</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							{% endif %}
+						{% endfor %}
+					</div>
+					<div class="col-lg-6 offset-lg-3 py-5 border">
+						<div class="pagination" style="justify-content: center;">
+						{{ knp_pagination_render(pagination) }}
+						</div>
+					</div>
+				</div>
+
+			</section>
+		</div>
+	</div>
+	</body>
+{% endblock %}
+

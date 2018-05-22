@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale|split('_')|first|default('en') }}">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noodp, noimageindex, notranslate, nocache" />
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<meta name="generator" content="EasyAdmin" />
+
+	<title>{% block page_title %}{{ block('content_title')|striptags|raw }}{% endblock %}</title>
+
+	{% block head_stylesheets %}
+		<link href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+		<link rel="stylesheet" href="{{ asset('bundles/easyadmin/stylesheet/easyadmin-all.min.css') }}">
+		<style>
+			{{ easyadmin_config('_internal.custom_css')|raw }}
+		</style>
+	{% endblock %}
+	{% for css_asset in easyadmin_config('design.assets.css') %}
+		<link rel="stylesheet" href="{{ asset(css_asset) }}">
+	{% endfor %}
+
+	{% block head_favicon %}
+		{% set favicon = easyadmin_config('design.assets.favicon') %}
+		<link rel="icon" type="{{ favicon.mime_type }}" href="{{ asset(favicon.path) }}" />
+	{% endblock %}
+
+	{% block head_javascript %}
+	{% block adminlte_options %}
+		<script type="text/javascript">
+            var AdminLTEOptions = {
+                animationSpeed: 'normal',
+                sidebarExpandOnHover: false,
+                enableBoxRefresh: false,
+                enableBSToppltip: false,
+                enableFastclick: false,
+                enableControlSidebar: false,
+                enableBoxWidget: false
+            };
+		</script>
+	{% endblock %}
+		<script src="{{ asset('assets/js/flickity.pkgd.js') }}"></script>
+		<script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+		<link href="{{ asset('assets/css/flickity.css') }}" rel="stylesheet">
+		<link href="{{ asset('assets/css/grid.css') }}" rel="stylesheet">
+		<script src="{{ asset('assets/js/infscroll.js') }}"></script>
+		<link src="{{ asset('assets/css/bootstrap.min.css') }}">
+		<script src="{{ asset('bundles/easyadmin/javascript/easyadmin-all.min.js') }}"></script>
+	{% endblock head_javascript %}
+
+	{% if easyadmin_config('design.rtl') %}
+		<link rel="stylesheet" href="{{ asset('bundles/easyadmin/stylesheet/bootstrap-rtl.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('bundles/easyadmin/stylesheet/adminlte-rtl.min.css') }}">
+	{% endif %}
+</head>
+
+{% block body %}
+	<body id="{% block body_id %}{% endblock %}" class="easyadmin sidebar-mini {% block body_class %}{% endblock %} {{ app.request.cookies.has('_easyadmin_navigation_iscollapsed') ? 'sidebar-collapse' }}">
+	<div class="wrapper">
+		{% block wrapper %}
+		<header class="main-header">
+			{% block header %}
+				<nav class="navbar" role="navigation">
+					<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+						<span class="sr-only">{{ 'toggle_navigation'|trans(domain = 'EasyAdminBundle') }}</span>
+					</a>
+
+					<div id="header-logo">
+						{% block header_logo %}
+							<a class="logo {{ easyadmin_config('site_name')|length > 14 ? 'logo-long' }}" title="{{ easyadmin_config('site_name')|striptags }}" href="{{ path('easyadmin') }}">
+								{{ easyadmin_config('site_name')|raw }}
+							</a>
+						{% endblock header_logo %}
+					</div>
+
+					<div class="navbar-custom-menu">
+						{% block header_custom_menu %}
+							{% set _logout_path = easyadmin_logout_path() %}
+							<ul class="nav navbar-nav">
+								<li class="dropdown user user-menu">
+									{% block user_menu %}
+										<span class="sr-only">{{ 'user.logged_in_as'|trans(domain = 'EasyAdminBundle') }}</span>
+
+										{% if app.user|default(false) == false %}
+											<i class="hidden-xs fa fa-user-times"></i>
+											{{ 'user.anonymous'|trans(domain = 'EasyAdminBundle') }}
+										{% elseif not _logout_path %}
+											<i class="hidden-xs fa fa-user"></i>
+											{{ app.user.username|default('user.unnamed'|trans(domain = 'EasyAdminBundle')) }}
+										{% else %}
+											<div class="btn-group">
+												<button type="button" class="btn" data-toggle="dropdown">
+													<i class="hidden-xs fa fa-user"></i>
+													{{ app.user.username|default('user.unnamed'|trans(domain = 'EasyAdminBundle')) }}
+												</button>
+												<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+													<span class="caret"></span>
+												</button>
+												<ul class="dropdown-menu" role="menu">
+													{% block user_menu_dropdown %}
+														<li>
+															<a href="{{ path('profile_action') }}"><i class="fa fa-user"></i> My Profile</a>
+														</li>
+														<li>
+															<a href="{{ _logout_path }}"><i class="fa fa-sign-out"></i> {{ 'user.signout'|trans(domain = 'EasyAdminBundle') }}</a>
+														</li>
+														{% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+															<li>
+																<a href="?_switch_user=_exit"><i class="fa fa-sign-out"></i> {{ 'user.exit_impersonation'|trans(domain = 'EasyAdminBundle') }}</a>
+															</li>
+														{% endif %}
+													{% endblock user_menu_dropdown %}
+												</ul>
+											</div>
+										{% endif %}
+									{% endblock user_menu %}
+								</li>
+							</ul>
+						{% endblock header_custom_menu %}
+					</div>
+				</nav>
+			{% endblock header %}
+		</header>
+
+		<aside class="main-sidebar">
+			<section class="sidebar">
+				<ul class="sidebar-menu">
+					<li class="   ">
+						<a href="/">
+							<i class="fa fa-line-chart"></i> <span>Dashboard</span>
+						</a>
+					</li>
+					<li class="   ">
+						<a href="/admin/management/">
+							<i class="fa fa-lock"></i> <span>Admin Space</span>
+						</a>
+					</li>
+					<li class="   ">
+						<a href="/forms/add">
+							<i class="fa fa-graduation-cap"></i> <span>Supervisor Space</span>
+						</a>
+					</li>
+					<li class="   ">
+						<a href="/evaluation">
+							<i class="fa fa-file-text-o"></i> <span>Add Evaluations</span>
+						</a>
+					</li>
+					<li class="   ">
+						<a href="/forms">
+							<i class="fa fa-book"></i> <span>My Training</span>
+						</a>
+					</li>
+					<li class="active">
+						<a href="/About">
+							<i class="fa fa-info"></i> <span>About</span>
+						</a>
+					</li>
+				</ul>
+			</section>
+		</aside>
+		<div class="content-wrapper">
+			<section class="content-header" >
+				<div class="row">
+					<div class="col-md-5 col-md-offset-4" >
+						<h1 class="title text-center" style="margin-top:25px;"> About SEREPT </h1>
+					</div>
+					<div class="col-sm-7">
+						<div class="global-actions">
+						</div>
+					</div>
+				</div>
+			</section>
+<br><br>
+
+			<div class="carousel" data-flickity='{ "autoPlay": 2000 }'>
+				<div class="carousel-cell">
+					<img class="figure-img img-responsive" src="{{ asset('assets/images/about/image1.jpg') }}"
+					     alt="look">
+				</div>
+				<div class="carousel-cell">
+					<img class="img-responsive" src="{{ asset('assets/images/about/image2.jpg') }}">
+				</div>
+				<div class="carousel-cell">
+					<img class="img-responsive" src="{{ asset('assets/images/about/image4.jpg') }}">
+				</div>
+				<div class="carousel-cell">
+					<img class="img-responsive" src="{{ asset('assets/images/about/image5.jpg') }}">
+				</div>
+				<div class="carousel-cell">
+					<img class="img-responsive" src="{{ asset('assets/images/about/image6.jpg') }}">
+				</div>
+				<div class="carousel-cell">
+					<img class="img-responsive" src="{{ asset('assets/images/about/image7.jpg') }}">
+				</div>
+				<div class="carousel-cell">
+					<img class="img-responsive" src="{{ asset('assets/images/about/image8.jpg') }}">
+				</div>
+			</div>
+			<br><br>
+			<div class="container">
+				<div class="row" style="padding:15px;">
+					<h2 class="title">Presentation</h2>
+					<h3 class="subtitle text-justify">The SEREPT (Petroleum Research and Exploitation Studies Company in
+						Tunisia), which is the oldest oil company in Tunisia, has been operating continuously in the
+						field of research, development and oil production for 75 years. 'existence. It has the most
+						complete archives, the most numerous and the most diverse studies, as well as the richest and
+						most important core library in the country. It was constituted on February 18, 1949 following a
+						notice inserted in the Tunisian official journal. ° 12 of February 11, 1949. But its true
+						origins go back to 1931 when it was the "Syndicate of Studies and Petroleum Researches in
+						Tunisia" (SERPT). Since its creation, SEREPT has been constantly avant-garde, in all fields
+						related to the exploration and exploitation of oil in Tunisia: The early 1970s saw a rapid and
+						significant development of the oil sector with the discovery of Ashtart and the creation of the
+						ETAP.Since 1978, SEREPT has been transformed into General Contractor for works on behalf of ETAP
+						(Tunisian Company of Petroleum Activities: represents the Tunisian State) and EAT (later renamed
+						EHT: Elf Hydro During the 1980s, the decline and instability of the price of crude oil and the
+						absence of significant discoveries after Ashtart led the subsidiary of Elf Aquitaine in Tunisia
+						to reduce its Exploration and Development budget. to abandon its research permits before selling
+						its interests in Tunisia. Between 1996 and 2003, the SEREPT has undergone successive changes of
+						the foreign partner with the award of ARCO, on September 17, 1997, the interests of EHT in the
+						concession. This partner also sold, in 2000, his interests in SEREPT, PREUSSAG ENERGY GmBH. In
+						2003 and until now, OMV became ETAP's partner in SEREPT and Ashtart.</h3>
+					<h2 class="title">Risk management</h2>
+					<h3 class="subtitle text-justify">Like any other company in the oil and gas industry, we are exposed
+						to a large number of risks - operational, regulatory, political - and especially market risks.
+
+						We have established a risk management system to establish the prevention manuals and limit the
+						most significant risks at the sites of our operations, and we have therefore adjusted our
+						strategic directions.
+
+						Known and estimated risks are managed and controlled through our well-defined policies that
+						specify responsibilities at all levels. We are prepared to bear more security and safety risks
+						in projects and operations where there are more issues.
+
+						However, we will abandon any transaction where security risks are disproportionate to the
+						potential benefits to society or its staff.</h3>
+					<h2 class="title">Professional ethics and conflicts of interest</h2>
+					<h3 class="subtitle text-justify">We believe that the professional ethics of a society play a major
+						role in the development of its culture.
+
+						Culture management involves the management of results.
+
+						Representatives of our society must act fairly, with integrity and in accordance with the
+						highest ethical standards - wherever they may be.
+
+						All conflicts of interest and all situations in which conflicts of interest may arise must be
+						disclosed.
+
+						We attach particular importance to the proper handling of confidential information and vigilance
+						to prevent insider trading.
+
+						We are aware of the importance of good relations with our partners, and we are strengthening
+						these contacts.
+
+						We believe that gifts, donations and invitations, whether offered or received, can be
+						misinterpreted.
+
+						For this reason, we treat such situations in a transparent and responsible manner. We respect
+						the national and international laws and we comply with them. We do not tolerate corrupt or
+						corrupt business practices of any kind.
+
+						When we enter into agreements with our contractors, suppliers and consultants, we take
+						reasonable steps to ensure that compliance with our Code of Conduct is not jeopardized.
+
+						Providing our employees with the means to express their concerns and to discreetly obtain
+						assistance and advice when ethical standards are violated is an important instrument to ensure
+						that we live up to our eminent standards.</h3>
+					<h2 class="title">confidentiality</h2>
+					<h3 class="subtitle text-justify">The confidentiality requirements in the company and for all
+						projects, ensure that the information is not misused.
+
+						Compliance with these rules is also controlled and any violation generates corresponding
+						penalties.</h3>
+				</div>
+				<div class="col-md-5">
+					<a class="twitter-timeline" data-height="600"
+					   href="https://twitter.com/SereptTunisia?ref_src=twsrc%5Etfw">Tweets by SereptTunisia</a>
+					<script async src="https://platform.twitter.com/widgets.js" charset="utf-8">
+					</script>
+				</div>
+			</div>
+		</div>
+
+
+			{% block body_javascript %}{% endblock body_javascript %}
+
+			{% for js_asset in easyadmin_config('design.assets.js') %}
+				<script src="{{ asset(js_asset) }}"></script>
+			{% endfor %}
+			{% endblock wrapper %}
+		</div>
+	</body>
+{% endblock body %}
+</html>

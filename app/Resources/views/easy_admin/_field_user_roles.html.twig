@@ -1,0 +1,8 @@
+
+{% set colors = field_options.label_colors|default(['primary']) %}
+
+{% for tag in value %}
+  <span class="fa fa-user"></span>  <span class="label label-{{ cycle(colors, loop.index) }}">{{ tag }}</span>
+    <br/>
+{% endfor %}
+

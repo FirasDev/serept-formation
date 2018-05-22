@@ -1,0 +1,10 @@
+{% extends '@EasyAdmin/default/list.html.twig' %}
+
+{% block global_actions %}
+
+     {{ parent() }}
+
+     {#<button class="btn btn-primary" style="margin-top:-22pxpadding:5px;"> Home</button>#}
+
+    <button onclick="location.href = '/';" class="btn btn-primary"  style="margin-top:-22px;margin-left:3px;padding:6px 9px 6px 9px " size="4"> Home</button>
+{% endblock %}

@@ -1,0 +1,62 @@
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+<link href="{{ asset('assets/css/login.css') }}" rel="stylesheet">
+
+{% block body %}
+<body>
+    <div class="container">
+        <div class="row main">
+            <div class="panel-heading">
+                <div class="panel-title text-center">
+                    <img src="{{ asset('assets/images/serept.png') }}" class="img-responsive center-block .mx-auto" style="display:block;width:280px;padding: auto;margin-top:50px;" alt="logo not found" />
+                    <hr />
+                </div>
+            </div>
+            <div class="main-login main-center">
+
+                <form class="form-horizontal" method="post" action="{{ path("fos_user_security_check") }}">
+                    {% if csrf_token %}
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                    {% endif %}
+                    <div class="form-group">
+                        <label for="username" class="cols-sm-2 control-label">Email</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" id="username" name="_username" value="{{ last_username }}" required="required" autocomplete="username"  placeholder="Enter your Email"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="cols-sm-2 control-label">{{ 'security.login.password'|trans }}</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                <input type="password" class="form-control" id="password" name="_password"  required="required" autocomplete="current-password"  placeholder="Enter your Password"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <input type="submit" class="btn btn-primary btn-lg btn-block login-button"  id="_submit" name="_submit" value="{{ 'Log In'|trans }}" />
+                    </div>
+                </form>
+                {% if error %}
+                    <div>
+                        <div class="login-error">
+                            <p class="message">
+                                <br>
+                                <img src="{{ asset('assets/images/alert.png') }}" class="img-responsive" style="width:8%;float: left;" alt="svg not found" />
+                                <p style="float: right;"></p><span style="color:red;"> &nbsp;{{ error.messageKey|trans(error.messageData, 'security') }}</span></div>
+                            <div class="next-steps">If the error continues send a mail to <a href="#">Firasbenmbarek@outlook.com</a>.</div>
+                        </div>
+
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}
+

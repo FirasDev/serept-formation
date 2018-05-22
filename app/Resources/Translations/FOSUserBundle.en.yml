@@ -1,0 +1,4 @@
+registration:
+    flash:
+        user_created: "Welcome to SEREPT's Professional Training Website"
+    confirmed: 'User was successfully added !'
